@@ -1,0 +1,262 @@
+@yepWindow_backgroundOpacityActive: 0.9;
+@yepWindow_backgroundOpacityInactive: 0.5;
+@yepWindow_airportDividerHeight: 4px;
+@yepWindow_resizeCornerSize: 12px;
+@yepAirportWindow_addBar_height: 24px;
+
+.button {
+    cursor: pointer;
+    user-select: none;
+}
+
+#mainYepContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#newBar {
+    height: 32px;
+    background: rgb(55, 55, 115);
+    text-align: center;
+
+    & > button {
+        margin: 4px;
+        height: 24px;
+    }
+}
+
+#spawnButton {
+
+    &.working {
+        pointer-events: none;
+        color: graytext;
+        cursor: wait;
+
+        & > input {
+            color: graytext;
+        }
+    }
+
+    & > span {
+        user-select: none;
+        margin: 0px 5px;
+    }
+
+    &:not(.mouseInClickableArea) {
+        border-style: outset !important;
+        border-color: buttonface !important;
+        background-color: buttonface !important;
+        outline: none !important;
+        color: GrayText;
+    }
+
+    #spawnButtonSelect {
+        display: none;
+    }
+}
+
+
+#newAirportICAO {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#spawnButtonClickableSpan {
+    font-weight: bold;
+}
+
+#playground {
+    position: relative;
+    height: calc(100% - 32px);
+    background: rgb(15, 15, 35);
+    overflow: hidden;
+}
+
+#mainYepContainer > div {
+    display: block;
+}
+
+.yepWindow_MainDiv {
+    &.navcanOIS {
+        iframe.WindowsIframesAlone {
+            transform: scale(0.5);
+            height: 200%;
+            width: 200%;
+            top: -50%;
+            left: -50%;
+        }
+    }
+}
+
+.yepWindow_MainDiv {
+    position: absolute;
+    left: 35px;
+    top: 25px;
+    width: 300px;
+    height: 200px;
+    min-width: 100px;
+    min-height: 75px;
+    background: rgb(235, 235, 235);
+    opacity: @yepWindow_backgroundOpacityInactive;
+    border: 2px rgba(115, 115, 115, 0.7) ridge;
+    box-sizing: content-box;
+
+    .yepWindow_topBar {
+        display: block;
+        position: relative;
+        user-select: none;
+        left: 0px;
+        top: 0px;
+        height: 16px;
+        background: gray;
+        color: white;
+    }
+
+    &.selected {
+        opacity: @yepWindow_backgroundOpacityActive;
+    }
+     
+    .newYepWindows_addBar_div {
+        display: block;
+        height: 24px;
+        background-color: rgb(175,175,185);
+
+    }
+
+    .newYepWindows_mainContent {
+        position: relative;
+        height: calc(100% - 16px);
+        border: 1px #9b9b9b inset;
+    }
+}
+
+.newYepWindows_mainContent {
+
+    > * {
+        display: block;
+    }
+
+    .airportWindowsDivision {
+        position: relative;
+        display: block;
+        border: 1.5px rgb(155, 155, 155) inset;
+        height: 50px;
+        max-width: 100%;
+        min-width: 100%;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        & > iframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        airportWindowsIframes {
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    }
+
+    iframe.WindowsIframesAlone {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        position: relative;
+    }
+}
+
+.yepWindow_topBar {
+
+    .yepWindow_topBar_title {
+        position: absolute;
+        top: 10%;
+        left: 25%;
+        display: inline-block;
+        width: 50%;
+        height: 80%;
+        line-height: 100%;
+        font-weight: bold;
+        font-size: 12px;
+        color: black;
+        /*text-decoration: underline;*/
+        cursor: move;
+        text-align: center;
+        border-radius: 5px 2px 5px 2px;
+        background-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .yepWindow_topBar_id {
+        position: absolute;
+        top: 0px;
+        left: 3px;
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .topRightCornerButtons {
+        position: absolute;
+        line-height: 16px;
+        cursor: pointer;
+        margin-top: -2px;
+    }
+
+    .yepWindow_topBar_close {
+        .topRightCornerButtons();
+        top: 0px;
+        right: 1px;
+        font-size: 12px;
+    }
+
+    .yepWindow_topBar_expand {
+        .topRightCornerButtons();
+        top: -2px;
+        right: 13px;
+        font-size: 20px;
+    }
+}
+
+
+.yepWindow_resizeCorner {
+    cursor: se-resize;
+    position: absolute;
+    height: @yepWindow_resizeCornerSize;
+    width: @yepWindow_resizeCornerSize;
+    background-color: white;
+    bottom: -1px;
+    right: -1px;
+    border-radius: calc(@yepWindow_resizeCornerSize * 4) 0px 0px 0px;
+    border: 1px rgba(115, 115, 115, 0.5) solid;
+    cursor: se-resize;
+    z-index: 220;
+}
+
+.airportWindowsDivisionResizer {
+    height: @yepWindow_airportDividerHeight;
+    z-index: 210;
+
+    &:hover {
+        cursor: n-resize;
+    }
+
+    > hr {
+        height: @yepWindow_airportDividerHeight;
+        background-color: gray;
+    }
+}
+
+#mouseDragAntiSelectDiv {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    z-index: 250;
+}

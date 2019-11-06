@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CANotAPI CYUL_APP Example Page</title>
+		
+		<style>
+			.CANotAPI_Notam_active {
+				background-color: lightgreen;
+			}
+			.CANotAPI_Notam_soonActive {
+				background-color: yellow;
+				background-opacity: 0.6;
+			}
+			.CANotAPI_Notam_inactive {
+				background-color: red;
+			}
+			.CANotAPI_Notam_timeUndef {
+				background-color: gray;
+			}
+		</style>
+	</head>
+	<body>
+		<span style="font-family:webdings;">A</span>
+		<?php
+			// Requires the CANotAPI script from this package
+			require('./CANotAPI.inc');
+			
+			//$search = ['CLSD', 'APCH'];
+			$search = ['CLSD', 'NOT AUTH', 'NOT AVBL'];
+			
+			echo '<h2>Important Notams for CYUL</h2>';
+			CANotAPI_EchoNotamsString('cyul', $search, false);
+			echo '<h2>Important Notams for CYHU</h2>';
+			CANotAPI_EchoNotamsString('CYHU', $search, false);
+			echo '<h2>Important Notams for CYMX</h2>';
+			CANotAPI_EchoNotamsString('CYMX', $search, false);
+			echo '<h2>Important Notams for CYJN</h2>';
+			CANotAPI_EchoNotamsString('CYJN', $search, false);
+      
+		?>
+	</body>
+</html>
