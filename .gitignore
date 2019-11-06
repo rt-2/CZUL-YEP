@@ -1,0 +1,4 @@
+﻿*.phpproj
+*.sln
+.vs/*
+*.phpproj

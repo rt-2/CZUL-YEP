@@ -138,6 +138,12 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         airportWindows_weatherDiv.append(airportWindows_weatherIframe);
         newYepWindows_mainContent.append(airportWindows_weatherDiv);
 
+        // Resizer
+        airportWindowsDivisionIidsResizer = $(document.createElement('div'));
+        airportWindowsDivisionIidsResizer.addClass('airportWindowsDivisionResizer');
+        airportWindowsDivisionIidsResizer.append($(document.createElement('hr')));
+        newYepWindows_mainContent.append(airportWindowsDivisionIidsResizer);
+
 
         // Callback(s)
         airportWindowsDivisionIidsResizer.mousedown(function (e) {
