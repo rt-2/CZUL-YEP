@@ -7,30 +7,30 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>YEP - Yanick's Euroscope ᶠᵃᵏᵉPlugin</title>
 
-    <script>
-        let _ = undefined;
-        window.uncacheStr = <?=$uncache_str?>;
-        less = {};
-        less.env = 'development';
-    </script>
+	<script>
+		let _ = undefined;
+		window.uncacheStr = <?=$uncache_str?>;
+		less = {};
+		less.env = 'development';
+	</script>
 
 
 	<link rel="stylesheet" type="text/css" href="assets/css/base.css?<?=$uncache_str?>">
 	<link rel="stylesheet/less" type="text/css" href="assets/css/styles.less?<?=$uncache_str?>" />
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
-    
-    <script src="assets/js/settings.js?<?=$uncache_str?>" ></script>
-    <script src="assets/js/scripts.js?<?=$uncache_str?>" ></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+
+	<script src="assets/js/settings.js?<?=$uncache_str?>" ></script>
+	<script src="assets/js/scripts.js?<?=$uncache_str?>" ></script>
 
 </head>
 
-	<body>
-		<div id="mainYepContainer">
+<body>
+	<div id="mainYepContainer">
 
             <div id="newBar">
             
@@ -103,10 +103,10 @@
 
             </div>
         </div>
-		<div id="mouseDragAntiSelectDiv">
+	<div id="mouseDragAntiSelectDiv">
         </div>
 
 
-	</body>
+</body>
 
 </html>
