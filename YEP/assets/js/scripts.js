@@ -117,7 +117,7 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         window.newYepWindows_divisionsToShow_arr = {
             'iids': 'https://atm.navcanada.ca/gca/iwv/' + current_icao,
             'FlightAware': 'https://flightaware.com/live/airport/' + current_icao,
-            'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle&' + uncacheStr,
+            //'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle',
             'Weather': 'https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
             'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
             'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,
@@ -135,7 +135,7 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
             let this_sectionDiv = null;
             let this_SectionResizer = null;
             let sectionName = index;
-            let sectionUrl = '//rt-2.net/YEP/Get/url.php?t=' + Date.now() + '&url=' + encodeURIComponent(window.newYepWindows_divisionsToShow_arr[index]);
+            let sectionUrl = '//rt-2.net/YEP/Get/url.php?t=' + Date.now() + '&url=' + encodeURIComponent(window.newYepWindows_divisionsToShow_arr[index] + '&' + uncacheStr);
             let sectionClasses = ' '+current_icao+' airportWindows_' + sectionName + 'Division airportWindowsDivision';
             let sectionIframeClasses = ' airportWindowsIframes airportWindowsIframe_' + sectionName;
             let sectionResizerClasses = ' airportWindows_' + sectionName + 'Resizer airportWindowsDivisionResizer';
