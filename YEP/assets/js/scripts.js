@@ -160,7 +160,11 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
             newYepWindows_mainContent.append(this_SectionResizer);
 
             this_sectionDiv_toggleButton = $(document.createElement('button'));
-            this_sectionDiv_toggleButton.text(sectionName);
+            //this_sectionDiv_toggleButton.text(sectionName);
+            const response = fetch('http://example.com/movies.json');
+            const myJson = response.json();
+            console.log(JSON.stringify(myJson));
+            this_sectionDiv_toggleButton.text(JSON.parse());
             this_sectionDiv_toggleButton.attr('onClick', '$(\'' + sectionClasses.replaceAll(' ', '.') + '\').slideToggle()');
             this_sectionDiv_toggleButton.addClass('newYepWindows_addBar_div_buttons');
             newYepWindows_addBar_div.append(this_sectionDiv_toggleButton);
