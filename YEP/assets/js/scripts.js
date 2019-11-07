@@ -17,10 +17,13 @@ let openedGenericOtherWindows = [];
 
 
 
-
 //
 //	Function(s)
 //
+String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 // Create new window
 function UserClickCreateNewAirport() {
 
@@ -92,11 +95,11 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
     if (!error) {
 
         // Init(s)
-        let newYepWindows_mainDiv;
-        let newYepWindows_mainContent;
-        let newYepWindows_addBar_div;
-        let airportWindows_iidsDiv;
-        let airportWindowsDivisionIidsResizer;
+        let newYepWindows_mainDiv = null;;
+        let newYepWindows_mainContent = null;
+        let newYepWindows_addBar_div = null;;
+        //let airportWindows_iidsDiv;
+        //let airportWindowsDivisionIidsResizer;
 
         // Main Window
         newYepWindows_mainDiv = createNewYepWindow('div', _, current_icao, () => { delete openedAirportICAO[current_icao]; });
@@ -111,6 +114,64 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         newYepWindows_addBar_div.addClass('newYepWindows_addBar_div');
         newYepWindows_mainContent.append(newYepWindows_addBar_div);
 
+        window.newYepWindows_divisionsToShow_arr = {
+            //'iids': '//atm.navcanada.ca/gca/iwv/' + current_icao,
+            'FlightAware': 'https://flightaware.com/live/airport/' + current_icao,
+            'Weather': '//rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle&' + uncacheStr,
+            'Weather': 'https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
+            'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
+            'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,
+        };
+
+
+        console.log(newYepWindows_divisionsToShow_arr);
+        console.log(Object.keys(newYepWindows_divisionsToShow_arr));
+        $(Object.keys(newYepWindows_divisionsToShow_arr)).each( (i, index) => {
+            console.log(index);
+            console.log(newYepWindows_divisionsToShow_arr);
+            console.log(window.newYepWindows_divisionsToShow_arr[index]);
+
+
+            let this_sectionDiv = null;
+            let this_SectionResizer = null;
+            let sectionName = index;
+            let sectionUrl = '//rt-2.net/YEP/Get/url.php?t=' + Date.now() + '&url=' + encodeURIComponent(window.newYepWindows_divisionsToShow_arr[index]);
+            let sectionClasses = ' '+current_icao+' airportWindows_' + sectionName + 'Division airportWindowsDivision';
+            let sectionIframeClasses = ' airportWindowsIframes airportWindowsIframe_' + sectionName;
+            let sectionResizerClasses = ' airportWindows_' + sectionName + 'Resizer airportWindowsDivisionResizer';
+
+            this_sectionDiv = $(document.createElement('div'));
+            this_sectionDiv.addClass(sectionClasses);
+            //airportWindows_weatherDiv.text('FlightAware');
+            this_sectionIframe = $(document.createElement('iframe'));
+            this_sectionIframe.addClass(sectionIframeClasses);
+            //this_sectionIframe.attr('referrerpolicy', 'no-referrer-when-downgrade');
+            this_sectionIframe.attr('referrerpolicy', 'no-referrer');
+            this_sectionIframe.attr('src', sectionUrl);
+            this_sectionDiv.append(this_sectionIframe);
+            newYepWindows_mainContent.append(this_sectionDiv);
+            this_sectionDiv.width(yepModifiedSettings.yepWindowDivision_defaultHeight);
+            this_sectionDiv.height(yepModifiedSettings.yepWindowDivision_defaultHeight);
+
+            // Resizer
+            this_SectionResizer = $(document.createElement('div'));
+            this_SectionResizer.addClass(sectionResizerClasses);
+            this_SectionResizer.append($(document.createElement('hr')));
+            newYepWindows_mainContent.append(this_SectionResizer);
+
+            this_sectionDiv_toggleButton = $(document.createElement('button'));
+            this_sectionDiv_toggleButton.text(sectionName);
+            this_sectionDiv_toggleButton.attr('onClick', '$(\'' + sectionClasses.replaceAll(' ', '.') + '\').slideToggle()');
+            this_sectionDiv_toggleButton.addClass('newYepWindows_addBar_div_buttons');
+            newYepWindows_addBar_div.append(this_sectionDiv_toggleButton);
+
+            // Callback(s)
+            this_SectionResizer.mousedown((e) => {
+                yepWindowResizeMouseDown(e, this_sectionDiv);
+            });
+
+        });
+        /*
         // IIS Division
         airportWindows_iidsDiv = $(document.createElement('div'));
         airportWindows_iidsDiv.addClass('airportWindows_iidsDivision airportWindowsDivision');
@@ -121,6 +182,12 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         airportWindows_iidsIframe.attr('src', '//atm.navcanada.ca/gca/iwv/' + current_icao);
         airportWindows_iidsDiv.append(airportWindows_iidsIframe);
         newYepWindows_mainContent.append(airportWindows_iidsDiv);
+        airportWindows_iidsDiv_ToggleButton = $(document.createElement('button'));
+        airportWindows_iidsDiv_ToggleButton.attr('rel', 'Toggle Expand');
+        airportWindows_iidsDiv_ToggleButton.text('IIDS');
+        airportWindows_iidsDiv_ToggleButton.attr('onClick', '$(\'.airportWindows_iidsDivision.airportWindowsDivision\').toggle()');
+        airportWindows_iidsDiv_ToggleButton.addClass('newYepWindows_addBar_div_buttons');
+        newYepWindows_addBar_div.append(airportWindows_iidsDiv_ToggleButton);
 
         // Resizer
         airportWindowsDivisionIidsResizer = $(document.createElement('div'));
@@ -134,21 +201,25 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         //airportWindows_weatherDiv.text('FlightAware');
         airportWindows_weatherIframe = $(document.createElement('iframe'));
         airportWindows_weatherIframe.addClass('airportWindowsIframes');
-        airportWindows_weatherIframe.attr('src', '//rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle&' + uncacheStr);
+        airportWindows_weatherIframe.attr('src', 'kk');
         airportWindows_weatherDiv.append(airportWindows_weatherIframe);
         newYepWindows_mainContent.append(airportWindows_weatherDiv);
 
         // Resizer
-        airportWindowsDivisionIidsResizer = $(document.createElement('div'));
-        airportWindowsDivisionIidsResizer.addClass('airportWindowsDivisionResizer');
-        airportWindowsDivisionIidsResizer.append($(document.createElement('hr')));
-        newYepWindows_mainContent.append(airportWindowsDivisionIidsResizer);
-
+        airportWindowsDivisionWeatherResizer = $(document.createElement('div'));
+        airportWindowsDivisionWeatherResizer.addClass('airportWindowsDivisionResizer');
+        airportWindowsDivisionWeatherResizer.append($(document.createElement('hr')));
+        newYepWindows_mainContent.append(airportWindowsDivisionWeatherResizer);
+        
 
         // Callback(s)
         airportWindowsDivisionIidsResizer.mousedown(function (e) {
             yepWindowResizeMouseDown(e, airportWindows_iidsDiv);
         });
+        airportWindowsDivisionWeatherResizer.mousedown(function (e) {
+            yepWindowResizeMouseDown(e, airportWindows_weatherDiv);
+        });
+        */
 
         // Var(s)
         newYepWindows_mainDiv.append(newYepWindows_mainContent);
@@ -483,6 +554,7 @@ function createNewYepWindow(tag, classes, barTitle, onCloseFunction, visible) {
 
     //Action(s)
     //
+    //console.log(yepModifiedSettings);
     newYepWindows_mainDiv = $(document.createElement(tag));
     newYepWindows_mainDiv.attr('id', newYepWindows_mainDiv_id);
     newYepWindows_mainDiv.addClass('yepWindow_MainDiv');
@@ -516,6 +588,12 @@ function createNewYepWindow(tag, classes, barTitle, onCloseFunction, visible) {
 
     $('#playground').append(newYepWindows_mainDiv);
 
+    newYepWindows_mainDiv.width(window.yepModifiedSettings.yepWindow_defaultWidth);
+    newYepWindows_mainDiv.height(window.yepModifiedSettings.yepWindow_defaultHeight);
+
+    //console.log('WTF');
+    //console.log(newYepWindows_mainDiv);
+    //console.log(window.yepModifiedSettings.yepWindow_defaultWidth);
 
     //Var(s)
     //

@@ -1,3 +1,8 @@
+
+@yepWindow_defaultWidth: 300px;
+@yepWindow_defaultHeight: 200px;
+@yepWindowDivision_defaultHeight: 85px;
+
 @yepWindow_backgroundOpacityActive: 0.9;
 @yepWindow_backgroundOpacityInactive: 0.5;
 @yepWindow_airportDividerHeight: 4px;
@@ -78,6 +83,7 @@
 }
 
 .yepWindow_MainDiv {
+    overflow: hidden;
     &.navcanOIS {
         iframe.WindowsIframesAlone {
             transform: scale(0.5);
@@ -93,8 +99,8 @@
     position: absolute;
     left: 35px;
     top: 25px;
-    width: 300px;
-    height: 200px;
+    /*width: @yepWindow_defaultWidth;*/
+    /*height: @yepWindow_defaultHeight;*/
     min-width: 100px;
     min-height: 75px;
     background: rgb(235, 235, 235);
@@ -141,7 +147,7 @@
         position: relative;
         display: block;
         border: 1.5px rgb(155, 155, 155) inset;
-        height: 50px;
+        height: @yepWindowDivision_defaultHeight;
         max-width: 100%;
         min-width: 100%;
         overflow-y: hidden;
@@ -200,6 +206,7 @@
         font-weight: bold;
     }
 
+
     .topRightCornerButtons {
         position: absolute;
         line-height: 16px;
@@ -251,6 +258,13 @@
     }
 }
 
+.newYepWindows_addBar_div {
+
+    .newYepWindows_addBar_div_buttons {
+        margin: 2px 0 0 5px;
+        border-radius: 4px;
+    }
+}
 #mouseDragAntiSelectDiv {
     display: none;
     position: fixed;

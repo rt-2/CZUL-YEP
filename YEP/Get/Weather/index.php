@@ -22,7 +22,7 @@
 	$arpt_icao = strtoupper($_GET['icao']);
 	
 	// set url 
-	curl_setopt($ch, CURLOPT_URL, 'https://www.aviationweather.gov/metar/data?ids='.$arpt_icao.'&format=raw&date=0&hours='.$hours.'&taf='.$taf); 
+	curl_setopt($ch, CURLOPT_URL, 'https://www.aviationweather.gov/metar/data?ids='.$arpt_icao.'&format=raw&date=0&hours='.$hours.'&taf='.$taf.'&layout=off'); 
 
 	//return the transfer as a string 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
