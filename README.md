@@ -1,5 +1,4 @@
-# CZUL-YEP
-Yanick's Euroscope ᶠᵃᵏᵉPlugin
+# Yanick's Euroscope ᶠᵃᵏᵉPlugin
 
 Functionnalities
   - Customizable layout :
