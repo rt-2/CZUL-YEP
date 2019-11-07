@@ -115,9 +115,9 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         newYepWindows_mainContent.append(newYepWindows_addBar_div);
 
         window.newYepWindows_divisionsToShow_arr = {
-            //'iids': '//atm.navcanada.ca/gca/iwv/' + current_icao,
+            'iids': 'https://atm.navcanada.ca/gca/iwv/' + current_icao,
             'FlightAware': 'https://flightaware.com/live/airport/' + current_icao,
-            'Weather': '//rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle&' + uncacheStr,
+            'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle&' + uncacheStr,
             'Weather': 'https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
             'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
             'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,

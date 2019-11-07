@@ -1,7 +1,8 @@
 
-@yepWindow_defaultWidth: 300px;
-@yepWindow_defaultHeight: 200px;
-@yepWindowDivision_defaultHeight: 85px;
+@yepWindow_defaultWidth: 450px;
+@yepWindow_defaultHeight: 300px;
+@yepWindowDivision_defaultHeight: 135px;
+@yepWindowDivision_defaultZoom: 0.75;
 
 @yepWindow_backgroundOpacityActive: 0.9;
 @yepWindow_backgroundOpacityInactive: 0.5;
@@ -153,11 +154,22 @@
         overflow-y: hidden;
         overflow-x: hidden;
         & > iframe {
-            width: 100%;
-            height: 100%;
+            width: calc(100% / @yepWindowDivision_defaultZoom) ;
+            height: calc(100% / @yepWindowDivision_defaultZoom);
             position: absolute;
             top: 0px;
             left: 0px;
+    -ms-transform: scale(@yepWindowDivision_defaultZoom);
+    -moz-transform: scale(@yepWindowDivision_defaultZoom);
+    -o-transform: scale(@yepWindowDivision_defaultZoom);
+    -webkit-transform: scale(@yepWindowDivision_defaultZoom);
+    transform: scale(@yepWindowDivision_defaultZoom);
+
+    -ms-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
         }
 
         airportWindowsIframes {
