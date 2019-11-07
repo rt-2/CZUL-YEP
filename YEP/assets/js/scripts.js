@@ -16,6 +16,21 @@ let openedAirportICAO = [];
 let openedGenericOtherWindows = [];
 
 
+async function GetMissingData(current_icao, completed_func) {
+    console.log('calling');
+    const response = await fetch('http://rt-2.net/YEP/Get/AirportPosition/?icao=' + current_icao + '&' + uncacheStr );
+    const myJson = await response.json();
+    console.log(myJson);
+    let arg_data = {
+        'arpt_lat': myJson.lat,
+        'arpt_lon': myJson.lon,
+    };
+    console.log(arg_data);
+    //console.log(newYepWindows_divisionsToShow_arr);
+    //console.log(window.newYepWindows_divisionsToShow_arr[index]);
+    return completed_func(arg_data);
+}
+
 
 //
 //	Function(s)
@@ -114,121 +129,137 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
         newYepWindows_addBar_div.addClass('newYepWindows_addBar_div');
         newYepWindows_mainContent.append(newYepWindows_addBar_div);
 
-        window.newYepWindows_divisionsToShow_arr = {
-            'iids': 'https://atm.navcanada.ca/gca/iwv/' + current_icao,
-            'FlightAware': 'https://flightaware.com/live/airport/' + current_icao,
-            //'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle',
-            'Weather': 'https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
-            'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
-            'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,
-        };
+
+        GetMissingData(current_icao, (data) => {
+            
+            console.log(data);
 
 
-        console.log(newYepWindows_divisionsToShow_arr);
-        console.log(Object.keys(newYepWindows_divisionsToShow_arr));
-        $(Object.keys(newYepWindows_divisionsToShow_arr)).each( (i, index) => {
-            console.log(index);
-            console.log(newYepWindows_divisionsToShow_arr);
-            console.log(window.newYepWindows_divisionsToShow_arr[index]);
+            window.newYepWindows_divisionsToShow_arr = {
+                'iids': '~https://atm.navcanada.ca/gca/iwv/' + current_icao,
+                'FlightAware': '~https://flightaware.com/live/airport/' + current_icao,
+                //'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle',
+                'Weather': '~https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
+                'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
+                'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,
+                'Sky Vector Map': 'https://skyvector.com/?ll='+data.arpt_lat+','+data.arpt_lon+'&chart=301&zoom=6' + current_icao,
+                'FltPlan Map': 'https://mapviewer.fltplan.com/?DEPTARPT=' + current_icao + '&ARRARPT=' + current_icao + '&maptype=jet',
+            };
 
 
-            let this_sectionDiv = null;
-            let this_SectionResizer = null;
-            let sectionName = index;
-            let sectionUrl = '//rt-2.net/YEP/Get/url.php?t=' + Date.now() + '&url=' + encodeURIComponent(window.newYepWindows_divisionsToShow_arr[index] + '&' + uncacheStr);
-            let sectionClasses = ' '+current_icao+' airportWindows_' + sectionName + 'Division airportWindowsDivision';
-            let sectionIframeClasses = ' airportWindowsIframes airportWindowsIframe_' + sectionName;
-            let sectionResizerClasses = ' airportWindows_' + sectionName + 'Resizer airportWindowsDivisionResizer';
+                //const myJson = response.json();
+                //console.log(JSON.stringify(myJson));
+            //this_sectionDiv_toggleButton.text(JSON.parse());
 
-            this_sectionDiv = $(document.createElement('div'));
-            this_sectionDiv.addClass(sectionClasses);
-            //airportWindows_weatherDiv.text('FlightAware');
-            this_sectionIframe = $(document.createElement('iframe'));
-            this_sectionIframe.addClass(sectionIframeClasses);
-            //this_sectionIframe.attr('referrerpolicy', 'no-referrer-when-downgrade');
-            this_sectionIframe.attr('referrerpolicy', 'no-referrer');
-            this_sectionIframe.attr('src', sectionUrl);
-            this_sectionDiv.append(this_sectionIframe);
-            newYepWindows_mainContent.append(this_sectionDiv);
-            this_sectionDiv.width(yepModifiedSettings.yepWindowDivision_defaultHeight);
-            this_sectionDiv.height(yepModifiedSettings.yepWindowDivision_defaultHeight);
+            //console.log(newYepWindows_divisionsToShow_arr);
+            //console.log(Object.keys(newYepWindows_divisionsToShow_arr));
+            $(Object.keys(newYepWindows_divisionsToShow_arr)).each( function (i, index) {
+
+                let this_sectionDiv = null;
+                let this_SectionResizer = null;
+                let sectionName = index;
+                let sectionUrl = window.newYepWindows_divisionsToShow_arr[index] + '&' + uncacheStr;
+                if(sectionUrl.indexOf('~') === 0)
+                {
+                    // '~' means to curl instead of direct iframe
+                    sectionUrl = '//rt-2.net/YEP/Get/url.php?t=' + Date.now() + '&url=' + encodeURIComponent(sectionUrl.substr(1));
+                }
+
+                let sectionClasses = ' '+current_icao+' airportWindows_' + sectionName + 'Division airportWindowsDivision';
+                let sectionIframeClasses = ' airportWindowsIframes airportWindowsIframe_' + sectionName;
+                let sectionResizerClasses = ' airportWindows_' + sectionName + 'Resizer airportWindowsDivisionResizer';
+
+                this_sectionDiv = $(document.createElement('div'));
+                this_sectionDiv.addClass(sectionClasses);
+                //airportWindows_weatherDiv.text('FlightAware');
+                this_sectionIframe = $(document.createElement('iframe'));
+                this_sectionIframe.addClass(sectionIframeClasses);
+                //this_sectionIframe.attr('referrerpolicy', 'no-referrer-when-downgrade');
+                this_sectionIframe.attr('referrerpolicy', 'no-referrer');
+                this_sectionIframe.attr('src', sectionUrl);
+                this_sectionDiv.append(this_sectionIframe);
+                newYepWindows_mainContent.append(this_sectionDiv);
+                this_sectionDiv.width(yepModifiedSettings.yepWindowDivision_defaultHeight);
+                this_sectionDiv.height(yepModifiedSettings.yepWindowDivision_defaultHeight);
+
+                // Resizer
+                this_SectionResizer = $(document.createElement('div'));
+                this_SectionResizer.addClass(sectionResizerClasses);
+                this_SectionResizer.append($(document.createElement('hr')));
+                newYepWindows_mainContent.append(this_SectionResizer);
+
+                this_sectionDiv_toggleButton = $(document.createElement('button'));
+                this_sectionDiv_toggleButton.text(sectionName);
+                this_sectionDiv_toggleButton.attr('onClick', '$(\'' + sectionClasses.replaceAll(' ', '.') + '\').slideToggle()');
+                this_sectionDiv_toggleButton.addClass('newYepWindows_addBar_div_buttons');
+                newYepWindows_addBar_div.append(this_sectionDiv_toggleButton);
+
+                // Callback(s)
+                this_SectionResizer.mousedown((e) => {
+                    yepWindowResizeMouseDown(e, this_sectionDiv);
+                });
+
+            });
+            /*
+            // IIS Division
+            airportWindows_iidsDiv = $(document.createElement('div'));
+            airportWindows_iidsDiv.addClass('airportWindows_iidsDivision airportWindowsDivision');
+            //airportWindows_iidsDiv.text('FlightAware: ');
+            let airportWindows_iidsIframe = $(document.createElement('iframe'));
+            airportWindows_iidsIframe.addClass('airportWindowsIframes');
+            airportWindows_iidsIframe.attr('referrerpolicy', 'no-referrer');
+            airportWindows_iidsIframe.attr('src', '//atm.navcanada.ca/gca/iwv/' + current_icao);
+            airportWindows_iidsDiv.append(airportWindows_iidsIframe);
+            newYepWindows_mainContent.append(airportWindows_iidsDiv);
+            airportWindows_iidsDiv_ToggleButton = $(document.createElement('button'));
+            airportWindows_iidsDiv_ToggleButton.attr('rel', 'Toggle Expand');
+            airportWindows_iidsDiv_ToggleButton.text('IIDS');
+            airportWindows_iidsDiv_ToggleButton.attr('onClick', '$(\'.airportWindows_iidsDivision.airportWindowsDivision\').toggle()');
+            airportWindows_iidsDiv_ToggleButton.addClass('newYepWindows_addBar_div_buttons');
+            newYepWindows_addBar_div.append(airportWindows_iidsDiv_ToggleButton);
 
             // Resizer
-            this_SectionResizer = $(document.createElement('div'));
-            this_SectionResizer.addClass(sectionResizerClasses);
-            this_SectionResizer.append($(document.createElement('hr')));
-            newYepWindows_mainContent.append(this_SectionResizer);
+            airportWindowsDivisionIidsResizer = $(document.createElement('div'));
+            airportWindowsDivisionIidsResizer.addClass('airportWindowsDivisionResizer');
+            airportWindowsDivisionIidsResizer.append($(document.createElement('hr')));
+            newYepWindows_mainContent.append(airportWindowsDivisionIidsResizer);
 
-            this_sectionDiv_toggleButton = $(document.createElement('button'));
-            //this_sectionDiv_toggleButton.text(sectionName);
-            const response = fetch('http://example.com/movies.json');
-            const myJson = response.json();
-            console.log(JSON.stringify(myJson));
-            this_sectionDiv_toggleButton.text(JSON.parse());
-            this_sectionDiv_toggleButton.attr('onClick', '$(\'' + sectionClasses.replaceAll(' ', '.') + '\').slideToggle()');
-            this_sectionDiv_toggleButton.addClass('newYepWindows_addBar_div_buttons');
-            newYepWindows_addBar_div.append(this_sectionDiv_toggleButton);
+            // Weather Division
+            airportWindows_weatherDiv = $(document.createElement('div'));
+            airportWindows_weatherDiv.addClass('airportWindows_weatherDivision airportWindowsDivision');
+            //airportWindows_weatherDiv.text('FlightAware');
+            airportWindows_weatherIframe = $(document.createElement('iframe'));
+            airportWindows_weatherIframe.addClass('airportWindowsIframes');
+            airportWindows_weatherIframe.attr('src', 'kk');
+            airportWindows_weatherDiv.append(airportWindows_weatherIframe);
+            newYepWindows_mainContent.append(airportWindows_weatherDiv);
 
-            // Callback(s)
-            this_SectionResizer.mousedown((e) => {
-                yepWindowResizeMouseDown(e, this_sectionDiv);
-            });
-
-        });
-        /*
-        // IIS Division
-        airportWindows_iidsDiv = $(document.createElement('div'));
-        airportWindows_iidsDiv.addClass('airportWindows_iidsDivision airportWindowsDivision');
-        //airportWindows_iidsDiv.text('FlightAware: ');
-        let airportWindows_iidsIframe = $(document.createElement('iframe'));
-        airportWindows_iidsIframe.addClass('airportWindowsIframes');
-        airportWindows_iidsIframe.attr('referrerpolicy', 'no-referrer');
-        airportWindows_iidsIframe.attr('src', '//atm.navcanada.ca/gca/iwv/' + current_icao);
-        airportWindows_iidsDiv.append(airportWindows_iidsIframe);
-        newYepWindows_mainContent.append(airportWindows_iidsDiv);
-        airportWindows_iidsDiv_ToggleButton = $(document.createElement('button'));
-        airportWindows_iidsDiv_ToggleButton.attr('rel', 'Toggle Expand');
-        airportWindows_iidsDiv_ToggleButton.text('IIDS');
-        airportWindows_iidsDiv_ToggleButton.attr('onClick', '$(\'.airportWindows_iidsDivision.airportWindowsDivision\').toggle()');
-        airportWindows_iidsDiv_ToggleButton.addClass('newYepWindows_addBar_div_buttons');
-        newYepWindows_addBar_div.append(airportWindows_iidsDiv_ToggleButton);
-
-        // Resizer
-        airportWindowsDivisionIidsResizer = $(document.createElement('div'));
-        airportWindowsDivisionIidsResizer.addClass('airportWindowsDivisionResizer');
-        airportWindowsDivisionIidsResizer.append($(document.createElement('hr')));
-        newYepWindows_mainContent.append(airportWindowsDivisionIidsResizer);
-
-        // Weather Division
-        airportWindows_weatherDiv = $(document.createElement('div'));
-        airportWindows_weatherDiv.addClass('airportWindows_weatherDivision airportWindowsDivision');
-        //airportWindows_weatherDiv.text('FlightAware');
-        airportWindows_weatherIframe = $(document.createElement('iframe'));
-        airportWindows_weatherIframe.addClass('airportWindowsIframes');
-        airportWindows_weatherIframe.attr('src', 'kk');
-        airportWindows_weatherDiv.append(airportWindows_weatherIframe);
-        newYepWindows_mainContent.append(airportWindows_weatherDiv);
-
-        // Resizer
-        airportWindowsDivisionWeatherResizer = $(document.createElement('div'));
-        airportWindowsDivisionWeatherResizer.addClass('airportWindowsDivisionResizer');
-        airportWindowsDivisionWeatherResizer.append($(document.createElement('hr')));
-        newYepWindows_mainContent.append(airportWindowsDivisionWeatherResizer);
+            // Resizer
+            airportWindowsDivisionWeatherResizer = $(document.createElement('div'));
+            airportWindowsDivisionWeatherResizer.addClass('airportWindowsDivisionResizer');
+            airportWindowsDivisionWeatherResizer.append($(document.createElement('hr')));
+            newYepWindows_mainContent.append(airportWindowsDivisionWeatherResizer);
         
 
-        // Callback(s)
-        airportWindowsDivisionIidsResizer.mousedown(function (e) {
-            yepWindowResizeMouseDown(e, airportWindows_iidsDiv);
-        });
-        airportWindowsDivisionWeatherResizer.mousedown(function (e) {
-            yepWindowResizeMouseDown(e, airportWindows_weatherDiv);
-        });
-        */
+            // Callback(s)
+            airportWindowsDivisionIidsResizer.mousedown(function (e) {
+                yepWindowResizeMouseDown(e, airportWindows_iidsDiv);
+            });
+            airportWindowsDivisionWeatherResizer.mousedown(function (e) {
+                yepWindowResizeMouseDown(e, airportWindows_weatherDiv);
+            });
+            */
 
-        // Var(s)
-        newYepWindows_mainDiv.append(newYepWindows_mainContent);
-        yepSelectWindow(newYepWindows_mainDiv);
-        openedAirportICAO[current_icao] = true;
+            // Var(s)
+            newYepWindows_mainDiv.append(newYepWindows_mainContent);
+            yepSelectWindow(newYepWindows_mainDiv);
+            openedAirportICAO[current_icao] = true;
+
+
+            console.log( 'https://skyvector.com/?ll='+data.arpt_lat+','+data.arpt_lon+'&chart=301&zoom=6' + current_icao);
+
+        });
+
 
     }
     //Var(s)

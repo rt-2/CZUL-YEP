@@ -7,7 +7,7 @@ function GetAirportPosition($icao)
 {
     $ret_arr = array(
 "lat"=> null,
-"long"=> null,
+"lon"=> null,
 );
         //echo '<br>';
 //var_dump($ret_arr);
@@ -20,7 +20,7 @@ function GetAirportPosition($icao)
         if($this_airport[APIDATA_AIRPORTS_ICAO] === $icao)
         {
             $ret_arr["lat"] = $this_airport[APIDATA_AIRPORTS_LAT];
-            $ret_arr['long'] = $this_airport[APIDATA_AIRPORTS_LONG];
+            $ret_arr['lon'] = $this_airport[APIDATA_AIRPORTS_LON];
         }
         //echo '<br><br>';
     }
