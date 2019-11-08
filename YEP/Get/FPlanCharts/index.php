@@ -20,14 +20,13 @@
 	$tmp = (isset($_GET['tmp']))? $_GET['tmp']: time();
 	$cookie = (isset($_GET['cookie']))? $_GET['cookie']: '';
     //$ckfile = tempnam(sys_get_temp_dir(), "CURLCOOKIE");
-    //var_dump(sys_get_temp_dir());
+    
     $ckfile = dirname(__FILE__).'/../../tmp/CURLCOOKIE.data.'.$tmp.'.txt';
     
-    
-//var_dump($ckfile);
 
 if(!isset($_GET['step2']))
 { 
+header("Content-Type: text/html; charset=utf-8");
         echo "<br><br>";
         echo "\n";
         echo "\n";
@@ -73,7 +72,18 @@ if(!isset($_GET['step2']))
     echo "\n\n";
     echo "<br><br>";
     echo "\n\n";
-    //var_dump($result);
+    var_dump($result);
+    
+    echo "<br><br>";
+    echo "\n\n";
+    echo "<br><br>";
+    echo "\n\n";
+    echo " YEAH YEAH";
+    echo "<br><br>";
+    echo "\n\n";
+    echo "<br><br>";
+    echo "\n\n";
+
     $ch = curl_init('https://tags.tiqcdn.com/utag/garmin/main/prod/utag.js');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array() );
@@ -103,7 +113,7 @@ String.prototype.replaceAll = function (search, replacement) {
     
     window.cookeValueFullStr; window.cookeValueFullStr=document.cookie;
     console.log(cookeValueFullStr);
-    cookeValueFullStr = 'fbotracking=CZUL; fbotrackingcrn=94206; ' + encodeURIComponent(cookeValueFullStr).replaceAll('%24', '$').replaceAll('%3A', ':').replaceAll('%3D', '=').replaceAll('%25', '%');
+    cookeValueFullStr = 'fbotracking=CZUL; fbotrackingcrn=94206; ' + encodeURIComponent(cookeValueFullStr);
     /*
     async function saveCookieForCurl(tmp, cookie) {
 
@@ -132,9 +142,10 @@ String.prototype.replaceAll = function (search, replacement) {
 
 
 if(isset($_GET['step2']))
-{
-header("Content-Type: text/html; charset=utf-8");   
+{   
 header("Content-Type: text/plain; charset=utf-8");
+var_dump($cookie);    
+//var_dump($ckfile);
     $data = array(
         'username' => $fltplan_fir_acc_user,
         'password' => $fltplan_fir_acc_pass,
@@ -145,24 +156,21 @@ header("Content-Type: text/plain; charset=utf-8");
     // Prepare new cURL resource
     $ch = curl_init('https://www.FltPlan.com/AwRegUserCk.exe?a=1');
     $headers = [
-        'Host: www.fltplan.com',
-        'User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0',
         'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
         'Accept-Encoding: gzip, deflate, br',
         'Accept-Language: en-US,en;q=0.9',
         'Cache-Control: max-age=0',
         'Content-Length: '.strlen($post_data),
         'Content-Type: application/x-www-form-urlencoded',
-        'Origin: https://fltplan.com',
-        'Connection: keep-alive',
-        'Referer: https://fltplan.com/',
         //'Cookie: __cfduid=de618785b5eab6e7711cd5d10d343ff951573026149; utag_main=v_id:016e4061476b0020861b117165840004d001800d00918$_sn:3$_ss:1$_st:1573099449644$ses_id:1573097649644%3Bexp-session$_pn:1%3Bexp-session; fbotracking=RT2; fbotrackingcrn=36717',
         'Cookie: '.$cookie,
-        'If-None-Match: 0243b497b58d21:0',
-        'Upgrade-Insecure-Requests: 1',
+        'Origin: https://fltplan.com',
+        'Referer: https://fltplan.com/',
         'sec-fetch-mode: navigate',
         'sec-fetch-site: same-site',
         'sec-fetch-user: ?1',
+        'Upgrade-Insecure-Requests: 1',
+        'User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.120 Safari/537.36',
     ];
     foreach($headers as $hstr){
         //echo '<br>';    
@@ -201,7 +209,7 @@ header("Content-Type: text/plain; charset=utf-8");
     echo "<br><br>";
     echo "\n\n"; 
     var_dump($result);
-
+    /*
     $data = array(
         'CRN10' => '36717',
         'CARRYUNAME' => $fltplan_fir_acc_user,
@@ -216,7 +224,7 @@ header("Content-Type: text/plain; charset=utf-8");
     //var_dump( $data);
     //var_dump( http_build_query($data));
     //var_dump( strlen(http_build_query($data)));
-
+    */
     $headers = [
         'Host: www.fltplan.com',
         'User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0',
@@ -235,7 +243,7 @@ header("Content-Type: text/plain; charset=utf-8");
         'Cache-Control: no-cache',
         'TE: Trailers',
     ];
-
+    /*
     foreach($headers as $hstr){
         echo "<br>";
         echo "\n";
@@ -265,5 +273,6 @@ header("Content-Type: text/plain; charset=utf-8");
     echo "<br><br>";
     echo "\n\n";
     //var_dump( urldecode($result));
+    */
     }
 ?>
