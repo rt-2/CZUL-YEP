@@ -408,83 +408,58 @@ function UserClickSaveButton() {
 
 // Start moving window
 function yepWindowMoveMouseDown(e, mainDivElement) {
+    
+    if(ResizeSelectedYepWindow == null)
+    {
+        // Init(s)
+        //
+        let currentElement;
 
-    // Init(s)
-    //
-    let currentElement;
+        // Vars(s)
+        //
+        currentElement = mainDivElement;
 
-    // Vars(s)
-    //
-    currentElement = mainDivElement;
+        //Action(s)
+        //
+        lastMousePos_X = e.clientX;
+        lastMousePos_Y = e.clientY;
+        origWindowPos_X = currentElement.position().left;
+        origWindowPos_Y = currentElement.position().top;
 
-    //Action(s)
-    //
-    lastMousePos_X = e.clientX;
-    lastMousePos_Y = e.clientY;
-    origWindowPos_X = currentElement.position().left;
-    origWindowPos_Y = currentElement.position().top;
-
-    //Var(s)
-    //
-    MoveSelectedYepWindowElement = mainDivElement;
-    $('#mouseDragAntiSelectDiv').show();
-
+        //Var(s)
+        //
+        MoveSelectedYepWindowElement = mainDivElement;
+        $('#mouseDragAntiSelectDiv').show();
+    }
 }
 
 // Start resizing window
 function yepWindowResizeMouseDown(e, mainDivElement) {
 
-    // Init(s)
-    //
-    let last_sibling_element;
+    if(ResizeSelectedYepWindow == null)
+    {
+        // Init(s)
+        //
+        let currentElement;
 
-    // Vars(s)
-    //
+        // Vars(s)
+        //
+        currentElement = mainDivElement;
+        
+        //Action(s)
+        //
+        lastMousePos_X = e.clientX;
+        lastMousePos_Y = e.clientY;
+        origWindowPos_X = mainDivElement.width();
+        origWindowPos_Y = mainDivElement.height();
+        
+        //Var(s)
+        //
+        ResizeSelectedYepWindow = mainDivElement;
+        $('#mouseDragAntiSelectDiv').show();
 
+    }
 
-    // Test(s)
-    //
-    /*
-    console.log(ResizeSelectedYepWindow);
-    console.log(ResizeSelectedYepWindow.siblings().last());
-    console.log(last_sibling_element);
-    console.log('height: ' + last_sibling_element.height());
-    console.log('offsetTop: ' + last_sibling_element.offset().top);
-    console.log('total: : ' + (last_sibling_element.height() + last_sibling_element.offset().top));
-    console.log('Parent Height: ' + last_sibling_element.parent().height() );
-    console.log('Parent Total Height: ' + (last_sibling_element.parent().height() + last_sibling_element.parent().offset().top));
-
-    last_sibling_element = ResizeSelectedYepWindow.siblings().last();
-    */
-    ResizeSelectedYepWindow = mainDivElement;
-    //Action(s)
-    //
-    yepWindowResizeOrMoveStartDragging(e, mainDivElement);
-
-}
-
-// Start window section
-function yepWindowResizeOrMoveStartDragging(e, mainDivElement) {
-
-    // Init(s)
-    //
-    let currentElement;
-
-    // Vars(s)
-    //
-    currentElement = mainDivElement;
-
-    //Action(s)
-    //
-    lastMousePos_X = e.clientX;
-    lastMousePos_Y = e.clientY;
-    origWindowPos_X = mainDivElement.width();
-    origWindowPos_Y = mainDivElement.height();
-
-    //Var(s)
-    //
-    ResizeSelectedYepWindow = mainDivElement;
-    $('#mouseDragAntiSelectDiv').show();
 }
 
 // Stop moving/resizing
@@ -507,7 +482,7 @@ function yepWindowMainDivMouseUp() {
 // Move/resizing windows
 function yepWindowMainDivMouseMoved(e) {
     if (MoveSelectedYepWindowElement != null) {
-
+        console.log(MoveSelectedYepWindowElement);
         // Init(s)
         //
         let currentElement;
@@ -551,6 +526,7 @@ function yepWindowMainDivMouseMoved(e) {
         currentElement.css('top', result_Y + 'px');
     }
     if (ResizeSelectedYepWindow != null) {
+        console.log(ResizeSelectedYepWindow);
         // Resize window
         currentElement = ResizeSelectedYepWindow;
         mouseDiffX = lastMousePos_X - e.pageX;
