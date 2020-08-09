@@ -367,7 +367,7 @@ function createFullIframeYepWindow(classes, title, task, href, onCloseFunction) 
     let newWindows_Iframe = $(document.createElement('iframe'));
     newWindows_Iframe.addClass('WindowsIframesAlone');
     newWindows_Iframe.attr('referrerpolicy', 'no-referrer');
-    newWindows_Iframe.attr('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+    //newWindows_Iframe.attr('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
     //newWindows_Iframe.attr('onLoad', 'console.log($(this)[0].contentWindow.find(\'body\'));');
     newWindows_Iframe.attr('src', href + ((href.indexOf('?') == -1) ? '?' : '&') + uncacheStr);
     newYepWindows_mainContent.append(newWindows_Iframe);
