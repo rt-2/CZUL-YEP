@@ -137,11 +137,11 @@ function UserConfirmCreateNewAirport(buttonElement, current_icao) {
 
             window.newYepWindows_divisionsToShow_arr = {
                 'iids': '~https://atm.navcanada.ca/gca/iwv/' + current_icao,
-                'FlightAware': '~https://flightaware.com/live/airport/' + current_icao,
+                'FlightAware': 'https://flightaware.com/live/airport/' + current_icao,
                 //'Weather': 'https://rt-2.net/YEP/Get/Weather/?icao=' + current_icao + '&noTitle',
-                'Weather': '~https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
-                'Charts': 'http://rt2.czulfir.com/Charts/?dir=' + current_icao,
-                'Notams': 'http://rt2.czulfir.com/Notams/?icao=' + current_icao,
+                'Weather': 'https://www.aviationweather.gov/metar/data?ids=' + current_icao + '&format=raw&hours=5&taf=on&layout=off',
+                'Charts': 'https://rt2.czulfir.com/Charts/?dir=' + current_icao,
+                'Notams': 'https://rt2.czulfir.com/Notams/?mandatory&nosearch&icao=' + current_icao,
                 'Sky Vector Map': 'https://skyvector.com/?ll='+data.arpt_lat+','+data.arpt_lon+'&chart=301&zoom=6' + current_icao,
                 'FltPlan Map': 'https://mapviewer.fltplan.com/?DEPTARPT=' + current_icao + '&ARRARPT=' + current_icao + '&maptype=jet',
             };
